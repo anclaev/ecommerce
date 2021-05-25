@@ -22,7 +22,7 @@ const Header = () => {
         onClick={clickHandler}
         selectedKeys={[current]}
         mode="horizontal"
-        theme="dark"
+        style={{ border: 'none' }}
       >
         <Item key="home" icon={<AppstoreOutlined />}>
           <Link to="/">Home</Link>
