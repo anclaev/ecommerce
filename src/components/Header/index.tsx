@@ -1,44 +1,39 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Menu } from 'antd'
-
-import {
-  AppstoreOutlined,
-  SettingOutlined,
-  UserOutlined,
-  UserAddOutlined,
-} from '@ant-design/icons'
-
-const { SubMenu, Item } = Menu
+import { Navbar, Icon } from 'react-materialize'
+import { NavLink } from 'react-router-dom'
 
 const Header = () => {
-  const [current, setCurrent] = useState('home')
-
-  const clickHandler = (e: any) => setCurrent(e.key)
-
   return (
-    <div className="header">
-      <Menu
-        onClick={clickHandler}
-        selectedKeys={[current]}
-        mode="horizontal"
-        style={{ border: 'none' }}
-      >
-        <Item key="home" icon={<AppstoreOutlined />}>
-          <Link to="/">Home</Link>
-        </Item>
-        <Item key="reg" icon={<UserAddOutlined />} className="float-right">
-          <Link to="/reg">Register</Link>
-        </Item>
-        <Item key="log" icon={<UserOutlined />} className="float-right">
-          <Link to="/log">Login</Link>
-        </Item>
-        <SubMenu key="SubMenu" icon={<SettingOutlined />} title="User">
-          <Item key="setting:1">Option 1</Item>
-          <Item key="setting:2">Option 2</Item>
-        </SubMenu>
-      </Menu>
-    </div>
+    <Navbar
+      className="header"
+      alignLinks="left"
+      id="mobile-nav"
+      menuIcon={<Icon>menu</Icon>}
+      options={{
+        draggable: true,
+        edge: 'left',
+        inDuration: 250,
+        outDuration: 200,
+        preventScrolling: true,
+      }}
+    >
+      <NavLink to="/">
+        Home
+        <Icon left>home</Icon>
+      </NavLink>
+
+      <NavLink to="/">
+        Username
+        <Icon left>person</Icon>
+      </NavLink>
+      <NavLink to="reg">
+        Sign Up
+        <Icon left>accessibility_new</Icon>
+      </NavLink>
+      <NavLink to="/log">
+        Login
+        <Icon left>login</Icon>
+      </NavLink>
+    </Navbar>
   )
 }
 
