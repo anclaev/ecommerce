@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { toast } from 'materialize-css'
 import { auth } from '../../firebase'
-import { useForm } from 'antd/lib/form/Form'
 
 const Register = () => {
   const [email, setEmail] = useState('')
