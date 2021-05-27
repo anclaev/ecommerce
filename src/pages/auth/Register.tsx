@@ -8,7 +8,7 @@ const Register = () => {
 
   const registerHandler = async () => {
     const valid = input.current?.classList.contains('valid')
-    Toast('Click!')
+
     if (!valid || email === '') return null
 
     try {
