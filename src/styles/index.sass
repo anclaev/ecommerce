@@ -1,10 +1,15 @@
 @import "https://fonts.googleapis.com/icon?family=Material+Icons"
+@import './vars'
 
 body
     min-width: 100vw
     min-height: 100vh
 
+.container
+    padding-top: $containerPaddingTop
+
 .header 
+    position: fixed
     & ul 
         width: 100%
         
@@ -15,21 +20,42 @@ body
 .sign-up
     width: 80%
     max-width: 450px
-    padding-top: 2em
+    min-height: 100vh
+
+    padding-top: calc(#{$containerPaddingTop} + 7%)
 
     &-form 
         text-align: center
         float: none !important
-        margin: 0 auto !important
+
+        & > h4 
+            margin-bottom: 1.5em
 
         & > .input-field 
             margin: 1.5em 0
 
-        & button 
-            float: right
+        & > div 
+            margin-bottom: 3em !important
 
 .mt3
     margin-top: 3em !important
 
-.toast-error
-    background-color: #ee6e73
+.toast
+    &-error
+        background-color: #ee6e73
+    &-success
+        background-color: #26a69a
+
+@media (max-width: 576px) 
+    .container 
+        padding-top: $containerPaddingTopM
+
+    .sign-up
+        padding-top: calc(#{$containerPaddingTop} + 7%)
+
+    h4 
+        font-size: 24px
+
+    .sign-up
+        justify-content: start
+        padding-bottom: 0

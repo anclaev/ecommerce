@@ -1,21 +1,48 @@
-import { useRef, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { auth } from '../../firebase'
 
 import Toast from '../../components/Toast'
 
-import { IRegisterComplete } from '../../types/components'
+import { IPropsWithHistory } from '../../types/components'
 
-const RegisterComplete: React.FC<IRegisterComplete> = ({ history }) => {
+const RegisterComplete: React.FC<IPropsWithHistory> = ({ history }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   useEffect(() => {
-    setEmail(window.localStorage.getItem('emailForRegistration') ?? 'null')
-  }, [])
+    let currentEmail = window.localStorage.getItem('emailForRegistration')
 
-  const clickHandler = () => {
+    if (currentEmail) {
+      setEmail(currentEmail)
+    } else {
+      Toast('Mail error, please try again.', 'toast-error')
+      history.push('/reg')
+    }
+  }, [history])
+
+  const clickHandler = async () => {
     if (password.length < 8) {
       Toast('Password cannot be less than 8 characters.', 'toast-error')
       return null
+    }
+
+    try {
+      const res = await auth.signInWithEmailLink(email, window.location.href)
+
+      if (res.user?.emailVerified) {
+        window.localStorage.removeItem('emailForRegistration')
+        let user = auth.currentUser
+
+        await user?.updatePassword(password)
+        //const idTokenResult = await user?.getIdTokenResult()
+
+        // TODO: Redux store
+
+        Toast('Registration completed successfully!', 'toast-success')
+        history.push('/')
+      }
+    } catch (e) {
+      setPassword('')
     }
   }
 
@@ -38,7 +65,7 @@ const RegisterComplete: React.FC<IRegisterComplete> = ({ history }) => {
           <label htmlFor="password">Your password</label>
         </div>
         <button onClick={clickHandler} className="btn">
-          Complete
+          Complete registration
         </button>
       </div>
     </div>

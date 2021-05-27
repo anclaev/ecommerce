@@ -1,8 +1,12 @@
 import { useRef, useState } from 'react'
 import { auth } from '../../firebase'
+
 import Toast from '../../components/Toast'
 
-const Register = () => {
+import { IPropsWithHistory } from '../../types/components'
+import { genPassword } from '../../functions'
+
+const Register: React.FC<IPropsWithHistory> = ({ history }) => {
   const [email, setEmail] = useState('')
   const input = useRef<HTMLInputElement>(null)
 
@@ -12,17 +16,25 @@ const Register = () => {
     if (!valid || email === '') return null
 
     try {
-      await auth.sendSignInLinkToEmail(email, {
-        url: process.env.REACT_APP_REGISTER_REDIRECT_URL ?? '/',
-        handleCodeInApp: true,
-      })
+      await auth.createUserWithEmailAndPassword(email, genPassword(12))
 
-      Toast(`Email is send to ${email}.`)
+      try {
+        await auth.sendSignInLinkToEmail(email, {
+          url: process.env.REACT_APP_REGISTER_REDIRECT_URL ?? '/',
+          handleCodeInApp: true,
+        })
 
-      window.localStorage.setItem('emailForRegistration', email)
-      setEmail('')
+        Toast(`Email is send to ${email}`, 'toast-success')
+
+        window.localStorage.setItem('emailForRegistration', email)
+        setEmail('')
+
+        history.push('/')
+      } catch (e) {
+        Toast(e.message, 'toast-error')
+      }
     } catch (e) {
-      Toast('Something went wrong. Try later.')
+      Toast(e.message, 'toast-error')
     }
   }
 

@@ -1,1 +1,5 @@
-export type IRegisterComplete = { history: string }
+export type IPropsWithHistory = {
+  history: {
+    push(url: string): void
+  }
+}
