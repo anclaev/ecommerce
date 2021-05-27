@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
-import { toast } from 'materialize-css'
 import { auth } from '../../firebase'
+import Toast from '../../components/Toast'
 
 const Register = () => {
   const [email, setEmail] = useState('')
@@ -8,23 +8,21 @@ const Register = () => {
 
   const registerHandler = async () => {
     const valid = input.current?.classList.contains('valid')
-
+    Toast('Click!')
     if (!valid || email === '') return null
 
     try {
       await auth.sendSignInLinkToEmail(email, {
-        url: 'http://localhost:3000/reg/success',
+        url: process.env.REACT_APP_REGISTER_REDIRECT_URL ?? '/',
         handleCodeInApp: true,
       })
 
-      toast({
-        html: `Email is send to ${email}.`,
-      })
+      Toast(`Email is send to ${email}.`)
 
       window.localStorage.setItem('emailForRegistration', email)
       setEmail('')
     } catch (e) {
-      toast({ html: 'Something went wrong. Try later.' })
+      Toast('Something went wrong. Try later.')
     }
   }
 
