@@ -4,16 +4,18 @@ import { BrowserRouter } from 'react-router-dom'
 
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
-
 import './styles/index.sass'
 
+import StoreProvider from './store'
 import App from './App'
 
 render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <StoreProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StoreProvider>
   </StrictMode>,
   document.body
 )
